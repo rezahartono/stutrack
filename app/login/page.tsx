@@ -10,8 +10,8 @@ export default async function LoginPage() {
     await db.user.create({
       data: {
         name: "Super Administrator",
-        email: "admin@stutrack.id",
-        password: "admin", // in production use bcrypt!
+        email: process.env.SUPERADMIN_EMAIL || "admin@stutrack.id",
+        password: process.env.SUPERADMIN_PASSWORD || "admin", // in production use bcrypt!
         role: "SUPERADMIN"
       }
     });
