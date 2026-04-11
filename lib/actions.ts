@@ -61,8 +61,6 @@ export async function createSession(courseId: string, formData: FormData) {
   });
 
   revalidatePath(`/courses/${courseId}`);
-  // Return a generic serializable success response for client components
-  return { success: true };
 }
 
 export async function upsertStudyRecord(sessionId: string, formData: FormData, courseId?: string) {
@@ -92,7 +90,6 @@ export async function upsertStudyRecord(sessionId: string, formData: FormData, c
   if (courseId) {
     revalidatePath(`/study-tracker?courseId=${courseId}`);
   }
-  return { success: true };
 }
 
 export async function createSemesterConfig(formData: FormData) {
@@ -114,7 +111,6 @@ export async function createSemesterConfig(formData: FormData) {
 
   revalidatePath("/settings");
   revalidatePath("/courses/new");
-  return { success: true };
 }
 
 export async function nukeDatabase() {
