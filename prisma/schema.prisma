@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/stutrack"
+  directUrl = env("DIRECT_URL")
 }
 
 model Semester {
