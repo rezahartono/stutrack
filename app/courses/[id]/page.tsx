@@ -43,14 +43,14 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-2">
-            {course.name}
+            {(course as any).name}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-slate-500">
-            <span className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> {course.semester?.name || "Global Semester"}</span>
-            <span className="flex items-center gap-1.5 text-indigo-500"><Presentation className="w-4 h-4" /> {course.sessions.length} Sesi Terdaftar</span>
-            {course.day && (
+            <span className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> {(course as any).semester?.name || "Global Semester"}</span>
+            <span className="flex items-center gap-1.5 text-indigo-500"><Presentation className="w-4 h-4" /> {(course as any).sessions.length} Sesi Terdaftar</span>
+            {(course as any).day && (
               <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-lg">
-                <CalendarDays className="w-4 h-4" /> {course.day} {course.startTime ? `@ ${course.startTime}` : ""}
+                <CalendarDays className="w-4 h-4" /> {(course as any).day} {(course as any).startTime ? `@ ${(course as any).startTime}` : ""}
               </span>
             )}
           </div>
@@ -193,7 +193,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
                 <select
                   id="day"
                   name="day"
-                  defaultValue={course.day || ""}
+                  defaultValue={(course as any).day || ""}
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
                 >
                   <option value="">-- Pilih Hari --</option>
@@ -214,7 +214,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
                   type="time"
                   id="startTime"
                   name="startTime"
-                  defaultValue={course.startTime || ""}
+                  defaultValue={(course as any).startTime || ""}
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                 />
               </div>
@@ -226,7 +226,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
                   type="time"
                   id="endTime"
                   name="endTime"
-                  defaultValue={course.endTime || ""}
+                  defaultValue={(course as any).endTime || ""}
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                 />
               </div>
@@ -238,7 +238,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
                   type="text"
                   id="room"
                   name="room"
-                  defaultValue={course.room || ""}
+                  defaultValue={(course as any).room || ""}
                   placeholder="Contoh: Lab Komputer A"
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                 />
