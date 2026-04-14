@@ -20,7 +20,7 @@ function getTodayName(): string {
 }
 
 export default async function SchedulePage() {
-  const courses = await db.course.findMany({
+  const courses = await (db.course.findMany as any)({
     include: { semester: true, sessions: true },
     orderBy: { startTime: "asc" },
   });
