@@ -132,60 +132,58 @@ export default async function Dashboard(props: { searchParams: Promise<{ view?: 
       </div>
 
       {/* Today's Classes Section */}
-  {
-    (() => {
-      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      const todayName = days[new Date().getDay()];
-      const todayClasses = allCoursesInSemester.filter(c => c.day === todayName);
+      {(() => {
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const todayName = days[new Date().getDay()];
+        const todayClasses = allCoursesInSemester.filter(c => (c as any).day === todayName);
 
-      if (todayClasses.length === 0) return null;
+        if (todayClasses.length === 0) return null;
 
-      return (
-        <div className="bg-gradient-to-r from-indigo-600 to-violet-700 rounded-3xl p-6 text-white shadow-xl shadow-indigo-200 dark:shadow-none relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-10">
-            <CalendarDays className="w-40 h-40" />
-          </div>
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-white/20 backdrop-blur-md rounded-lg">
-                  <CalendarDays className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-lg font-bold">Kuliah Hari Ini ({todayName})</h3>
-              </div>
-              <Link href="/schedule" className="text-xs font-bold bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-lg transition-colors">
-                Lihat Semua →
-              </Link>
+        return (
+          <div className="bg-gradient-to-r from-indigo-600 to-violet-700 rounded-3xl p-6 text-white shadow-xl shadow-indigo-200 dark:shadow-none relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10">
+              <CalendarDays className="w-40 h-40" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {todayClasses.map(c => (
-                <div key={c.id} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h4 className="font-bold leading-tight">{c.name}</h4>
-                      <span className="text-[10px] uppercase font-black bg-indigo-500/50 px-2 py-0.5 rounded flex-shrink-0">{c.category}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-white/70 text-xs font-medium">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{c.startTime || "--:--"}</span>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-white/20 backdrop-blur-md rounded-lg">
+                    <CalendarDays className="w-5 h-5 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold">Kuliah Hari Ini ({todayName})</h3>
+                </div>
+                <Link href="/schedule" className="text-xs font-bold bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-lg transition-colors">
+                  Lihat Semua →
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {todayClasses.map(c => (
+                  <div key={(c as any).id} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h4 className="font-bold leading-tight">{(c as any).name}</h4>
+                        <span className="text-[10px] uppercase font-black bg-indigo-500/50 px-2 py-0.5 rounded flex-shrink-0">{(c as any).category}</span>
                       </div>
-                      {c.room && (
-                        <div className="flex items-center gap-1 border-l border-white/20 pl-3">
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span className="truncate max-w-[100px]">{c.room}</span>
+                      <div className="flex items-center gap-3 text-white/70 text-xs font-medium">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{(c as any).startTime || "--:--"}</span>
                         </div>
-                      )}
+                        {(c as any).room && (
+                          <div className="flex items-center gap-1 border-l border-white/20 pl-3">
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span className="truncate max-w-[100px]">{(c as any).room}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      );
-    })()
-  }
+        );
+      })()}
 
   <div className="mb-4">
     <h2 className="text-xl font-black text-slate-800 dark:text-slate-200">{title}</h2>
@@ -301,6 +299,6 @@ export default async function Dashboard(props: { searchParams: Promise<{ view?: 
       </div>
     )}
   </div>
-    </div >
+</div>
   );
 }
