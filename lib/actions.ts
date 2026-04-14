@@ -31,7 +31,7 @@ export async function createCourse(formData: FormData) {
     actualSemesterId = defaultSemester.id;
   }
 
-  const course = await db.course.create({
+  const course = await (db.course.create as any)({
     data: {
       name,
       code,
@@ -55,7 +55,7 @@ export async function updateCourseSchedule(courseId: string, formData: FormData)
   const endTime = (formData.get("endTime") as string) || null;
   const room = (formData.get("room") as string) || null;
 
-  await db.course.update({
+  await (db.course.update as any)({
     where: { id: courseId },
     data: { day, startTime, endTime, room },
   });
