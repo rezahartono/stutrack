@@ -39,7 +39,7 @@ export default async function SchedulePage() {
   }
 
   const today = getTodayName();
-  const scheduled = courses.filter((c) => (c as any).day);
+  const scheduled = courses.filter((c: any) => c.day);
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
@@ -145,20 +145,20 @@ export default async function SchedulePage() {
                       Tidak ada kuliah hari ini
                     </div>
                   ) : (
-                    dayCourses.map((course) => (
+                    dayCourses.map((course: any) => (
                       <Link
-                        key={(course as any).id}
-                        href={`/courses/${(course as any).id}`}
+                        key={course.id}
+                        href={`/courses/${course.id}`}
                         className="flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors group"
                       >
                         {/* Time column */}
                         <div className="flex items-center gap-2 min-w-[130px]">
                           <Clock className={`w-4 h-4 flex-shrink-0 ${isToday ? color.text : "text-slate-400"}`} />
                           <span className="text-sm font-mono font-semibold text-slate-700 dark:text-slate-300">
-                            {(course as any).startTime && (course as any).endTime
-                              ? `${(course as any).startTime} – ${(course as any).endTime}`
-                              : (course as any).startTime
-                              ? (course as any).startTime
+                            {course.startTime && course.endTime
+                              ? `${course.startTime} – ${course.endTime}`
+                              : course.startTime
+                              ? course.startTime
                               : "–"}
                           </span>
                         </div>
@@ -166,33 +166,33 @@ export default async function SchedulePage() {
                         {/* Course info */}
                         <div className="flex-1 min-w-0">
                           <p className={`font-bold text-slate-900 dark:text-white group-hover:${color.text} transition-colors truncate`}>
-                            {(course as any).name}
+                            {course.name}
                           </p>
-                          <p className="text-xs text-slate-500 font-mono mt-0.5">{(course as any).code}</p>
+                          <p className="text-xs text-slate-500 font-mono mt-0.5">{course.code}</p>
                         </div>
 
                         {/* Room */}
-                        {(course as any).room && (
+                        {course.room && (
                           <div className="flex items-center gap-1.5 text-sm text-slate-500">
                             <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                            <span className="truncate max-w-[160px]">{(course as any).room}</span>
+                            <span className="truncate max-w-[160px]">{course.room}</span>
                           </div>
                         )}
 
                         {/* Category badge */}
                         <span
                           className={`px-2.5 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
-                            (course as any).category === "Praktik"
+                            course.category === "Praktik"
                               ? "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
                               : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
                           }`}
                         >
-                          {(course as any).category}
+                          {course.category}
                         </span>
 
                         {/* Semester */}
                         <span className="text-xs text-slate-400 hidden lg:block flex-shrink-0">
-                          {(course as any).semester?.name}
+                          {course.semester?.name}
                         </span>
                       </Link>
                     ))
@@ -221,27 +221,27 @@ export default async function SchedulePage() {
                 </Link>
               </div>
               <div className="bg-white dark:bg-slate-950 rounded-b-2xl divide-y divide-slate-100 dark:divide-slate-800/60">
-                {unscheduled.map((course) => (
+                {unscheduled.map((course: any) => (
                   <Link
-                    key={(course as any).id}
-                    href={`/courses/${(course as any).id}`}
+                    key={course.id}
+                    href={`/courses/${course.id}`}
                     className="flex items-center gap-4 px-6 py-4 hover:bg-amber-50/50 dark:hover:bg-amber-500/5 transition-colors group"
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
-                        {(course as any).name}
+                        {course.name}
                       </p>
-                      <p className="text-xs text-slate-500 font-mono mt-0.5">{(course as any).code}</p>
+                      <p className="text-xs text-slate-500 font-mono mt-0.5">{course.code}</p>
                     </div>
                     <span className="text-xs text-amber-500 font-medium">Belum dijadwalkan</span>
                     <span
                       className={`px-2.5 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
-                        (course as any).category === "Praktik"
+                        course.category === "Praktik"
                           ? "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
                           : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
                       }`}
                     >
-                      {(course as any).category}
+                      {course.category}
                     </span>
                   </Link>
                 ))}
