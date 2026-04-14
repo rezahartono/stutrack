@@ -1,4 +1,4 @@
-import { Plus, Search, BookOpen, Clock, MoreVertical, LayoutGrid, List } from "lucide-react";
+import { Plus, Search, BookOpen, Clock, MoreVertical, LayoutGrid, List, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db";
 
@@ -99,6 +99,19 @@ export default async function CoursesPage() {
                     <span className="truncate">{course.semester?.name || "Semester Aktif"}</span>
                   </div>
                 </div>
+
+                {course.day && (
+                  <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-lg w-fit">
+                    <CalendarDays className="w-3.5 h-3.5" />
+                    <span>{course.day}</span>
+                    {course.startTime && (
+                      <span className="flex items-center gap-1 border-l border-indigo-200 dark:border-indigo-500/30 pl-2 ml-1">
+                        <Clock className="w-3 h-3" />
+                        {course.startTime} {course.endTime ? ` - ${course.endTime}` : ""}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </Link>
           ))}

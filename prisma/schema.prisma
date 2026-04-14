@@ -26,6 +26,10 @@ model Course {
   name       String
   code       String
   category   String   // "Praktik" | "Non-Praktik"
+  day        String?  // "Senin" | "Selasa" | "Rabu" | "Kamis" | "Jumat" | "Sabtu" | "Minggu"
+  startTime  String?  // Format "HH:MM"
+  endTime    String?  // Format "HH:MM"
+  room       String?  // Ruang kelas
   semester   Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
   sessions   Session[]
   createdAt  DateTime @default(now())

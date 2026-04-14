@@ -1,8 +1,8 @@
-import { BookOpen, Calendar as CalendarIcon, CheckCircle2, ChevronRight, Clock, Plus, Presentation, Save, Settings } from "lucide-react";
+import { BookOpen, Calendar as CalendarIcon, CheckCircle2, ChevronRight, Clock, Plus, Presentation, Save, Settings, CalendarDays, MapPin } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { createSession } from "@/lib/actions";
+import { createSession, updateCourseSchedule } from "@/lib/actions";
 
 export default async function CourseDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -21,6 +21,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
   }
 
   const createSessionForCourse = createSession.bind(null, course.id);
+  const updateCourseScheduleAction = updateCourseSchedule.bind(null, course.id);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -44,9 +45,14 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-2">
             {course.name}
           </h1>
-          <div className="flex items-center gap-4 text-sm font-medium text-slate-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-slate-500">
             <span className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> {course.semester?.name || "Global Semester"}</span>
             <span className="flex items-center gap-1.5 text-indigo-500"><Presentation className="w-4 h-4" /> {course.sessions.length} Sesi Terdaftar</span>
+            {course.day && (
+              <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-lg">
+                <CalendarDays className="w-4 h-4" /> {course.day} {course.startTime ? `@ ${course.startTime}` : ""}
+              </span>
+            )}
           </div>
         </div>
         
@@ -169,6 +175,80 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
               className="w-full mt-4 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-sm shadow-indigo-200 dark:shadow-none"
             >
               <Save className="w-4 h-4" /> Simpan Sesi
+            </button>
+          </form>
+        </div>
+
+        {/* Update Schedule Card */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 mt-6">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <CalendarDays className="w-5 h-5 text-indigo-500" /> Atur Jadwal
+          </h3>
+          <form action={updateCourseScheduleAction} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="col-span-2">
+                <label htmlFor="day" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Hari
+                </label>
+                <select
+                  id="day"
+                  name="day"
+                  defaultValue={course.day || ""}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
+                >
+                  <option value="">-- Pilih Hari --</option>
+                  <option value="Senin">Senin</option>
+                  <option value="Selasa">Selasa</option>
+                  <option value="Rabu">Rabu</option>
+                  <option value="Kamis">Kamis</option>
+                  <option value="Jumat">Jumat</option>
+                  <option value="Sabtu">Sabtu</option>
+                  <option value="Minggu">Minggu</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="startTime" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Jam Mulai
+                </label>
+                <input
+                  type="time"
+                  id="startTime"
+                  name="startTime"
+                  defaultValue={course.startTime || ""}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                />
+              </div>
+              <div>
+                <label htmlFor="endTime" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Jam Selesai
+                </label>
+                <input
+                  type="time"
+                  id="endTime"
+                  name="endTime"
+                  defaultValue={course.endTime || ""}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                />
+              </div>
+              <div className="col-span-2">
+                <label htmlFor="room" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Ruang Kelas
+                </label>
+                <input
+                  type="text"
+                  id="room"
+                  name="room"
+                  defaultValue={course.room || ""}
+                  placeholder="Contoh: Lab Komputer A"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="w-full items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-2 rounded-xl transition-all text-sm block text-center"
+            >
+              Update Jadwal
             </button>
           </form>
         </div>

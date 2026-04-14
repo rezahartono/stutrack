@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, BookText, Calendar, FileBarChart, Settings, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, BookText, CalendarDays, Calendar, FileBarChart, Settings, Users, LogOut } from "lucide-react";
 import { cookies } from "next/headers";
 import { logoutUser } from "@/lib/auth-actions";
 
@@ -11,7 +11,8 @@ export async function Sidebar() {
   const menus = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Study Tracker", href: "/study-tracker", icon: BookText },
-    { name: "Courses", href: "/courses", icon: BookText },
+    { name: "Mata Kuliah", href: "/courses", icon: BookText },
+    { name: "Jadwal", href: "/schedule", icon: CalendarDays },
     { name: "Calendar", href: "/calendar", icon: Calendar },
     { name: "Reports", href: "/reports", icon: FileBarChart },
     { name: "Settings", href: "/settings", icon: Settings },

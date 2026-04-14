@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpen, Bookmark, Save } from "lucide-react";
+import { ArrowLeft, BookOpen, Bookmark, Save, CalendarDays, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 import { createCourse } from "@/lib/actions";
 import { db } from "@/lib/db";
@@ -89,6 +89,72 @@ export default async function NewCoursePage() {
                 )}
               </select>
               <p className="text-xs text-slate-500 mt-2">Mata kuliah akan dikaitkan ke semester yang dipilih.</p>
+            </div>
+
+            {/* Jadwal Kuliah */}
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-indigo-500" />
+                Jadwal Kuliah <span className="text-slate-400 font-normal">(opsional)</span>
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="day" className="block text-sm font-semibold text-slate-900 dark:text-slate-200 mb-1.5">
+                    Hari
+                  </label>
+                  <select
+                    id="day"
+                    name="day"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium text-slate-900 dark:text-white appearance-none"
+                  >
+                    <option value="">-- Pilih Hari --</option>
+                    <option value="Senin">Senin</option>
+                    <option value="Selasa">Selasa</option>
+                    <option value="Rabu">Rabu</option>
+                    <option value="Kamis">Kamis</option>
+                    <option value="Jumat">Jumat</option>
+                    <option value="Sabtu">Sabtu</option>
+                    <option value="Minggu">Minggu</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="room" className="block text-sm font-semibold text-slate-900 dark:text-slate-200 mb-1.5 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-indigo-500" /> Ruang Kelas
+                  </label>
+                  <input
+                    type="text"
+                    id="room"
+                    name="room"
+                    placeholder="Contoh: Lab Komputer A"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="startTime" className="block text-sm font-semibold text-slate-900 dark:text-slate-200 mb-1.5 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-indigo-500" /> Jam Mulai
+                  </label>
+                  <input
+                    type="time"
+                    id="startTime"
+                    name="startTime"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="endTime" className="block text-sm font-semibold text-slate-900 dark:text-slate-200 mb-1.5 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-purple-500" /> Jam Selesai
+                  </label>
+                  <input
+                    type="time"
+                    id="endTime"
+                    name="endTime"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
