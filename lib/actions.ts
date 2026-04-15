@@ -49,19 +49,20 @@ export async function createCourse(formData: FormData) {
   redirect(`/courses/${course.id}`);
 }
 
-export async function updateCourseSchedule(courseId: string, formData: FormData) {
+export async function updateCourse(courseId: string, formData: FormData) {
+  const name = formData.get("name") as string;
+  const code = formData.get("code") as string;
+  const category = formData.get("category") as string;
   const day = (formData.get("day") as string) || null;
-  const startTime = (formData.get("startTime") as string) || null;
-  const endTime = (formData.get("endTime") as string) || null;
-  const room = (formData.get("room") as string) || null;
 
   await (db.course.update as any)({
     where: { id: courseId },
-    data: { day, startTime, endTime, room },
+    data: { name, code, category, day },
   });
 
   revalidatePath("/schedule");
   revalidatePath("/courses");
+  revalidatePath(`/courses/${courseId}`);
 }
 
 export async function createSession(courseId: string, formData: FormData) {

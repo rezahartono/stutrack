@@ -22,7 +22,7 @@ function getTodayName(): string {
 export default async function SchedulePage() {
   const courses = await (db.course.findMany as any)({
     include: { semester: true, sessions: true },
-    orderBy: { startTime: "asc" },
+    orderBy: { name: "asc" },
   });
 
   // Group by day
@@ -151,18 +151,6 @@ export default async function SchedulePage() {
                         href={`/courses/${course.id}`}
                         className="flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors group"
                       >
-                        {/* Time column */}
-                        <div className="flex items-center gap-2 min-w-[130px]">
-                          <Clock className={`w-4 h-4 flex-shrink-0 ${isToday ? color.text : "text-slate-400"}`} />
-                          <span className="text-sm font-mono font-semibold text-slate-700 dark:text-slate-300">
-                            {course.startTime && course.endTime
-                              ? `${course.startTime} – ${course.endTime}`
-                              : course.startTime
-                              ? course.startTime
-                              : "–"}
-                          </span>
-                        </div>
-
                         {/* Course info */}
                         <div className="flex-1 min-w-0">
                           <p className={`font-bold text-slate-900 dark:text-white group-hover:${color.text} transition-colors truncate`}>
@@ -170,14 +158,6 @@ export default async function SchedulePage() {
                           </p>
                           <p className="text-xs text-slate-500 font-mono mt-0.5">{course.code}</p>
                         </div>
-
-                        {/* Room */}
-                        {course.room && (
-                          <div className="flex items-center gap-1.5 text-sm text-slate-500">
-                            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                            <span className="truncate max-w-[160px]">{course.room}</span>
-                          </div>
-                        )}
 
                         {/* Category badge */}
                         <span

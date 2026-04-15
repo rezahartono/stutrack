@@ -2,7 +2,7 @@ import { BookOpen, Calendar as CalendarIcon, CheckCircle2, ChevronRight, Clock, 
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { createSession, updateCourseSchedule } from "@/lib/actions";
+import { createSession, updateCourse } from "@/lib/actions";
 import DateRangePicker from "@/components/DateRangePicker";
 
 export default async function CourseDetailPage(props: { params: Promise<{ id: string }> }) {
@@ -22,7 +22,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
   }
 
   const createSessionForCourse = createSession.bind(null, course.id);
-  const updateCourseScheduleAction = updateCourseSchedule.bind(null, course.id);
+  const updateCourseAction = updateCourse.bind(null, course.id);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -51,7 +51,7 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
             <span className="flex items-center gap-1.5 text-indigo-500"><Presentation className="w-4 h-4" /> {(course as any).sessions.length} Sesi Terdaftar</span>
             {(course as any).day && (
               <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-lg">
-                <CalendarDays className="w-4 h-4" /> {(course as any).day} {(course as any).startTime ? `@ ${(course as any).startTime}` : ""}
+                <CalendarDays className="w-4 h-4" /> {(course as any).day}
               </span>
             )}
           </div>
@@ -160,76 +160,81 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
           </form>
         </div>
 
-        {/* Update Schedule Card */}
+        {/* Edit Course Card */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 mt-6">
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-            <CalendarDays className="w-5 h-5 text-indigo-500" /> Atur Jadwal
+            <Settings className="w-5 h-5 text-indigo-500" /> Edit Mata Kuliah
           </h3>
-          <form action={updateCourseScheduleAction} className="space-y-4">
+          <form action={updateCourseAction} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Nama Mata Kuliah
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                defaultValue={course.name}
+                required
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              />
+            </div>
+            
             <div className="grid grid-cols-2 gap-3">
-              <div className="col-span-2">
-                <label htmlFor="day" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Hari
-                </label>
-                <select
-                  id="day"
-                  name="day"
-                  defaultValue={(course as any).day || ""}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
-                >
-                  <option value="">-- Pilih Hari --</option>
-                  <option value="Senin">Senin</option>
-                  <option value="Selasa">Selasa</option>
-                  <option value="Rabu">Rabu</option>
-                  <option value="Kamis">Kamis</option>
-                  <option value="Jumat">Jumat</option>
-                  <option value="Sabtu">Sabtu</option>
-                  <option value="Minggu">Minggu</option>
-                </select>
-              </div>
               <div>
-                <label htmlFor="startTime" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Jam Mulai
-                </label>
-                <input
-                  type="time"
-                  id="startTime"
-                  name="startTime"
-                  defaultValue={(course as any).startTime || ""}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                />
-              </div>
-              <div>
-                <label htmlFor="endTime" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Jam Selesai
-                </label>
-                <input
-                  type="time"
-                  id="endTime"
-                  name="endTime"
-                  defaultValue={(course as any).endTime || ""}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                />
-              </div>
-              <div className="col-span-2">
-                <label htmlFor="room" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Ruang Kelas
+                <label htmlFor="code" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Kode
                 </label>
                 <input
                   type="text"
-                  id="room"
-                  name="room"
-                  defaultValue={(course as any).room || ""}
-                  placeholder="Contoh: Lab Komputer A"
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  id="code"
+                  name="code"
+                  defaultValue={course.code}
+                  required
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 font-mono"
                 />
               </div>
+              <div>
+                <label htmlFor="category" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Kategori
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  defaultValue={course.category}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
+                >
+                  <option value="Praktik">Praktik</option>
+                  <option value="Non-Praktik">Non-Praktik</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="day" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Hari Perkuliahan
+              </label>
+              <select
+                id="day"
+                name="day"
+                defaultValue={(course as any).day || ""}
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
+              >
+                <option value="">-- Pilih Hari --</option>
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+                <option value="Sabtu">Sabtu</option>
+                <option value="Minggu">Minggu</option>
+              </select>
             </div>
             <button
               type="submit"
-              className="w-full items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-2 rounded-xl transition-all text-sm block text-center"
+              className="w-full items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition-all text-sm block text-center shadow-lg shadow-indigo-200 dark:shadow-none"
             >
-              Update Jadwal
+              Simpan Perubahan
             </button>
           </form>
         </div>

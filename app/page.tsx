@@ -166,15 +166,9 @@ export default async function Dashboard(props: { searchParams: Promise<{ view?: 
                       </div>
                       <div className="flex items-center gap-3 text-white/70 text-xs font-medium">
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>{(c as any).startTime || "--:--"}</span>
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span> {c.code} </span>
                         </div>
-                        {(c as any).room && (
-                          <div className="flex items-center gap-1 border-l border-white/20 pl-3">
-                            <MapPin className="w-3.5 h-3.5" />
-                            <span className="truncate max-w-[100px]">{(c as any).room}</span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
