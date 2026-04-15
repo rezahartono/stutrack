@@ -53,9 +53,9 @@ export default async function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-slate-500 mt-8">
+        {/* <p className="text-center text-sm text-slate-500 mt-8">
           Belum punya akun? <Link href="/register" className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Daftar di sini</Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );

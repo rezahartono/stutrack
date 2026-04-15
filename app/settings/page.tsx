@@ -3,6 +3,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { createSemesterConfig, nukeDatabase } from "@/lib/actions";
 import CleansingButtonClient from "./CleansingButtonClient";
+import DateRangePicker from "@/components/DateRangePicker";
 
 export default async function SettingsPage(props: { searchParams: Promise<{ tab?: string }> }) {
   const searchParams = await props.searchParams;
@@ -119,15 +120,9 @@ export default async function SettingsPage(props: { searchParams: Promise<{ tab?
                       <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Semester</label>
                       <input type="text" name="name" required placeholder="Contoh: Ganjil 2026/2027" className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50" />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tanggal Mulai</label>
-                        <input type="date" name="startDate" required className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tanggal Selesai</label>
-                        <input type="date" name="endDate" required className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50" />
-                      </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Rentang Waktu Semester</label>
+                      <DateRangePicker />
                     </div>
                     <button type="submit" className="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition-all">
                       Simpan Semester
