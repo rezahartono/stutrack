@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { createSession, updateCourseSchedule } from "@/lib/actions";
+import DateRangePicker from "@/components/DateRangePicker";
 
 export default async function CourseDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -126,31 +127,11 @@ export default async function CourseDetailPage(props: { params: Promise<{ id: st
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="startDate" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Tanggal Mulai
-                </label>
-                <input
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  required
-                  className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                />
-              </div>
-              <div>
-                <label htmlFor="endDate" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Tanggal Selesai
-                </label>
-                <input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  required
-                  className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Rentang Tanggal
+              </label>
+              <DateRangePicker />
             </div>
 
             <div className="pt-2">
