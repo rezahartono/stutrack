@@ -10,30 +10,55 @@ export default async function CalendarPage() {
   });
 
   const colorPalette = [
-    "bg-indigo-500", "bg-emerald-500", "bg-rose-500", 
-    "bg-amber-500", "bg-fuchsia-500", "bg-blue-500", "bg-cyan-500"
+    { bg: "bg-indigo-500", hex: "#6366f1", border: "#4f46e5", text: "text-indigo-50" },
+    { bg: "bg-emerald-500", hex: "#10b981", border: "#059669", text: "text-emerald-50" },
+    { bg: "bg-rose-500", hex: "#f43f5e", border: "#e11d48", text: "text-rose-50" },
+    { bg: "bg-amber-500", hex: "#f59e0b", border: "#d97706", text: "text-amber-50" },
+    { bg: "bg-fuchsia-500", hex: "#d946ef", border: "#c026d3", text: "text-fuchsia-50" },
+    { bg: "bg-blue-500", hex: "#3b82f6", border: "#2563eb", text: "text-blue-50" },
+    { bg: "bg-cyan-500", hex: "#06b6d4", border: "#0891b2", text: "text-cyan-50" },
+    { bg: "bg-violet-500", hex: "#8b5cf6", border: "#7c3aed", text: "text-violet-50" },
+    { bg: "bg-orange-500", hex: "#f97316", border: "#ea580c", text: "text-orange-50" },
+    { bg: "bg-teal-500", hex: "#14b8a6", border: "#0d9488", text: "text-teal-50" },
   ];
   
-  // Use a map to assign a consistent color to each unique courseId
-  const courseColorMap = new Map<string, string>();
-  let colorIndex = 0;
+  // Use a map to assign a base color index to each unique courseId
+  const courseColorIndexMap = new Map<string, number>();
+  // Use a map to track the session count/index per course
+  const courseSessionCounterMap = new Map<string, number>();
+  let nextColorIndex = 0;
 
-  const events = sessions.map(session => {
-    if (!courseColorMap.has(session.courseId)) {
-      courseColorMap.set(session.courseId, colorPalette[colorIndex % colorPalette.length]);
-      colorIndex++;
+  const events = sessions.map((session) => {
+    // Assign base color for the course if not already assigned
+    if (!courseColorIndexMap.has(session.courseId)) {
+      courseColorIndexMap.set(session.courseId, nextColorIndex % colorPalette.length);
+      nextColorIndex++;
     }
+    
+    // Get and increment the session index for this course
+    const currentSessionIdx = courseSessionCounterMap.get(session.courseId) || 0;
+    courseSessionCounterMap.set(session.courseId, currentSessionIdx + 1);
+
+    const baseIdx = courseColorIndexMap.get(session.courseId)!;
+    // Each session of the same course gets an offset color from the palette
+    // multiplying by 2 to jump further in the palette for visual distinction
+    const sessionColorIdx = (baseIdx + (currentSessionIdx * 2)) % colorPalette.length;
+    
+    const color = colorPalette[sessionColorIdx];
     
     return {
       id: session.id,
       title: session.name,
       start: session.startDate,
       end: session.endDate,
+      backgroundColor: color.hex,
+      borderColor: color.border,
       extendedProps: {
         courseName: session.course.name,
         hasDiscussion: session.hasDiscussion,
         hasTask: session.hasTask,
-        colorClass: courseColorMap.get(session.courseId)
+        colorClass: color.bg,
+        textColorClass: color.text
       }
     };
   });

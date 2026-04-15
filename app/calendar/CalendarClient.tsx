@@ -11,10 +11,14 @@ type SessionEvent = {
   title: string;
   start: Date;
   end: Date;
+  backgroundColor?: string;
+  borderColor?: string;
   extendedProps: {
     courseName: string;
     hasDiscussion: boolean;
     hasTask: boolean;
+    colorClass: string;
+    textColorClass: string;
   };
 };
 
@@ -98,16 +102,17 @@ export default function CalendarClient({ events }: { events: SessionEvent[] }) {
         height="auto"
         dayMaxEvents={true}
         eventContent={(eventInfo) => {
-          const { hasDiscussion, hasTask, courseName } = eventInfo.event.extendedProps;
+          const { hasDiscussion, hasTask, courseName, textColorClass } = eventInfo.event.extendedProps;
+          const textColor = textColorClass || "text-white";
           return (
             <div className="flex flex-col p-1 w-full overflow-hidden">
               <div className="flex items-center gap-1 mb-0.5">
-                <span className="font-bold truncate text-white drop-shadow-sm">{eventInfo.event.title}</span>
+                <span className={`font-bold truncate drop-shadow-sm ${textColor}`}>{eventInfo.event.title}</span>
                 {(hasDiscussion || hasTask) && (
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0 shadow-sm" title="Ada Diskusi/Tugas"></span>
                 )}
               </div>
-              <span className="text-[10px] opacity-90 truncate text-indigo-50 font-medium">{courseName}</span>
+              <span className={`text-[10px] opacity-90 truncate font-medium ${textColor}`}>{courseName}</span>
             </div>
           );
         }}
